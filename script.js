@@ -1,17 +1,20 @@
 document.addEventListener('DOMContentLoaded', function () {
-
-    // DOM elements
     const addButton = document.getElementById('add-task-btn');
     const taskInput = document.getElementById('task-input');
     const taskList = document.getElementById('task-list');
 
-    // Load tasks from localStorage or initialize empty array
+    // Initialize tasks array from localStorage or as empty array
     let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
-    // Render all tasks to the page
-    tasks.forEach(function (taskText) {
-        createTaskElement(taskText);
-    });
+    // Load existing tasks from localStorage
+    loadTasks();
+
+    // Function to load and display all tasks from localStorage
+    function loadTasks() {
+        tasks.forEach(function (taskText) {
+            createTaskElement(taskText);
+        });
+    }
 
     // Function to add a new task
     function addTask() {
@@ -22,18 +25,18 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // Add to DOM
+        // Add task to DOM
         createTaskElement(taskText);
 
-        // Add to local array and localStorage
+        // Add task to array and update localStorage
         tasks.push(taskText);
         localStorage.setItem('tasks', JSON.stringify(tasks));
 
-        // Clear input
+        // Clear input field
         taskInput.value = "";
     }
 
-    // Function to create and append a task element to the DOM
+    // Function to create a task item in the DOM
     function createTaskElement(taskText) {
         const listItem = document.createElement('li');
         listItem.textContent = taskText;
@@ -42,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function () {
         removeButton.textContent = "Remove";
         removeButton.className = 'remove-btn';
 
-        // Remove task from DOM and localStorage
         removeButton.onclick = function () {
             taskList.removeChild(listItem);
 
@@ -55,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
         taskList.appendChild(listItem);
     }
 
-    // Event listeners for adding tasks
+    // Event listeners
     addButton.addEventListener('click', addTask);
 
     taskInput.addEventListener('keypress', function (event) {
